@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SDR LAB</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .login-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        display: block;
+        width: 80%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+
+      button {
+        display: block;
+        width: 90%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>軟體定義無線電實驗室</h1>
+      <h3>ZedBoard 練習入口</h3>
+      <span>請勿長時間佔用運算資源，使用完畢請關閉頁面。</span>
+      <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm" onsubmit="submitLogin(event)">
+          <label for="username">學號:</label>
+          <input type="text" id="username" name="username" required />
+
+          <!-- <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required /> -->
+
+          <button type="submit">Login</button>
+        </form>
+
+        <p style="width: 100%; font-size: 5px; text-align: right">
+          若無法登入請與助教聯絡
+        </p>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    async function submitLogin(event) {
+      event.preventDefault(); // Prevent form submission
+
+      const username = document.getElementById("username").value;
+
+      const response = await fetch("/login", {
+        method: "POST",
+        cache: "no-cache",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        // Process the response, e.g., save the token, redirect to another page, etc.
+        window.location.href = "/notebook/?token=" + jsonResponse.token;
+      } else {
+        // Handle the error, e.g., show an error message
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+        if (response.status === 401) {
+          alert("無此帳號，請與助教聯絡！");
+        }
+      }
+    }
+  </script>
+</html>
