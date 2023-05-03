@@ -13,7 +13,10 @@
 jupyter --config-dir
 ```
 
-This will output the path to the configuration directory, which typically is ~/.jupyter for the current user. 2. Create or modify the jupyter_notebook_config.py file: In the configuration directory, look for a file named jupyter_notebook_config.py. If the file doesn't exist, create it. 3. Open the jupyter_notebook_config.py file with your favorite text editor and add or modify the following lines:
+This will output the path to the configuration directory, which typically is ~/.jupyter for the current user.
+
+2. Create or modify the jupyter_notebook_config.py file: In the configuration directory, look for a file named jupyter_notebook_config.py. If the file doesn't exist, create it.
+3. Open the jupyter_notebook_config.py file with your favorite text editor and add or modify the following lines:
 
 ```python
 c.NotebookApp.allow_origin = '*'
