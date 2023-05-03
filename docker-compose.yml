@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  flask_app:
+    build:
+      context: .
+      dockerfile: Dockerfile-flask
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./sdr_lab_portal:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    networks:
+      - sdr-app
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - flask_app
+    networks:
+      - sdr-app
+
+networks:
+  sdr-app:
+    driver: bridge
